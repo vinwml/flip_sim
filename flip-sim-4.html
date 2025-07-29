@@ -908,7 +908,7 @@
 
 	window.addEventListener('devicemotion', function(event) {
 		const acc = event.accelerationIncludingGravity;
-
+		document.getElementById("log").innerText = "accX:" + acc.x + " accY:" + acc.y ;
 		if (acc) {
 			// Example: use x-axis tilt to control angle
 			const angle = Math.atan2(acc.y, acc.x) * (180 / Math.PI);
