@@ -16,6 +16,9 @@
 	PIC
 	<input type = "range" min = "0" max = "10" value = "9" class = "slider" onchange="scene.flipRatio = 0.1 * this.value"> FLIP 
 <br>
+
+	<button onclick="requestMotionPermission()">Enable Motion Control</button>
+<br>
 	<canvas id="myCanvas" style="border:2px solid"></canvas>
 <br>
     <p id="log"></p>
@@ -23,8 +26,8 @@
 
 	var canvas = document.getElementById("myCanvas");
 	var gl = canvas.getContext("webgl");	
-	canvas.width = 640; //window.innerWidth - 20;
-	canvas.height = 640; //window.innerHeight - 20;
+	canvas.width = 480; //window.innerWidth - 20;
+	canvas.height = 480; //window.innerHeight - 20;
 
 	canvas.focus();
 
@@ -102,10 +105,10 @@
 		integrateParticles(dt, gravity) 
 		{
             // console.log(scene.angle);
-            var degree = Math.PI*(scene.angle/180)
+            // var degree = Math.PI*(scene.angle/180)
 			for (var i = 0; i < this.numParticles; i++) {
-                this.particleVel[2 * i] += dt * gravity * Math.cos(degree);        // x direction
-				this.particleVel[2 * i + 1] += dt * gravity * Math.sin(degree);        // y direction
+                this.particleVel[2 * i] += dt * gravity * Math.cos(scene.angle);        // x direction
+				this.particleVel[2 * i + 1] += dt * gravity * Math.sin(scene.angle);        // y direction
 				this.particlePos[2 * i] += this.particleVel[2 * i] * dt;
 				this.particlePos[2 * i + 1] += this.particleVel[2 * i + 1] * dt;
 			}
@@ -596,7 +599,7 @@
 	{
 		gravity : -9.81,
 //		gravity : 0.0,
-        angle: 90.0,
+        angle: 0.5 * Math.PI,
 		dt : 1.0 / 120.0,
 		flipRatio : 1.0,
 		numPressureIters : 100,
@@ -906,15 +909,42 @@
 	});
 
 
-	window.addEventListener('devicemotion', function(event) {
+	// window.addEventListener('devicemotion', function(event) {
+	// 	const acc = event.accelerationIncludingGravity;
+	// 	document.getElementById("log").innerText = "accX:" + acc.x + " accY:" + acc.y ;
+	// 	if (acc) {
+	// 		// Example: use x-axis tilt to control 
+	// 		const angle = Math.atan2(acc.y, acc.x) * (180 / Math.PI);
+	// 		scene.angle = angle;
+	// 	}
+	// });
+
+	function requestMotionPermission() {
+		if (typeof DeviceMotionEvent.requestPermission === 'function') {
+			DeviceMotionEvent.requestPermission()
+				.then(permissionState => {
+					if (permissionState === 'granted') {
+						window.addEventListener('devicemotion', handleMotion);
+						alert("Motion control enabled!");
+					} else {
+						alert("Permission denied.");
+					}
+				})
+				.catch(console.error);
+		} else {
+			// For Android or non-iOS browsers
+			window.addEventListener('devicemotion', handleMotion);
+		}
+	}
+
+	function handleMotion(event) {
 		const acc = event.accelerationIncludingGravity;
-		document.getElementById("log").innerText = "accX:" + acc.x + " accY:" + acc.y ;
 		if (acc) {
-			// Example: use x-axis tilt to control angle
-			const angle = Math.atan2(acc.y, acc.x) * (180 / Math.PI);
+			const angle = Math.atan2(acc.y, acc.x);// * (180 / Math.PI);
 			scene.angle = angle;
 		}
-	});
+	}
+
 
 
 	function toggleStart()
