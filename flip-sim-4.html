@@ -26,8 +26,8 @@
 
 	var canvas = document.getElementById("myCanvas");
 	var gl = canvas.getContext("webgl");	
-	canvas.width = 480; //window.innerWidth - 20;
-	canvas.height = 480; //window.innerHeight - 20;
+	canvas.width = 400; //window.innerWidth - 20;
+	canvas.height = 400; //window.innerHeight - 20;
 
 	canvas.focus();
 
@@ -940,7 +940,7 @@
 	function handleMotion(event) {
 		const acc = event.accelerationIncludingGravity;
 		if (acc) {
-			const angle = Math.atan2(acc.y, acc.x);// * (180 / Math.PI);
+			const angle = Math.atan2(-acc.y, -acc.x);// * (180 / Math.PI);
 			scene.angle = angle;
 		}
 	}
