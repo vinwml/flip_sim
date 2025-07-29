@@ -911,7 +911,7 @@
 
 		if (acc) {
 			// Example: use x-axis tilt to control angle
-			const angle = Math.atan2(acc.x, acc.y) * (180 / Math.PI);
+			const angle = Math.atan2(acc.y, acc.x) * (180 / Math.PI);
 			scene.angle = angle;
 		}
 	});
