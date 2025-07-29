@@ -631,15 +631,19 @@
 		scene.numParticleIters = 2;
 
 		var res = 16;
-	
+        if (GetURLParameter('res')!= null){ res = GetURLParameter('res');}
+        
 		var tankHeight = 1.0 * simHeight;
 		var tankWidth = 1.0 * simWidth;
 		var h = tankHeight / res;
 		var density = 1000.0;
 
-		var relWaterHeight = 0.6
-		var relWaterWidth = 0.6
-
+		var relWaterHeight = 0.6;
+		var relWaterWidth = 0.6;
+        if (res >=100){
+            relWaterHeight = 0.4;
+		    relWaterWidth = 0.4;
+        }
 		// dam break
 
 		// compute number of particles
@@ -944,7 +948,20 @@
 			scene.angle = angle;
 		}
 	}
-	
+
+    function GetURLParameter(sParam)
+	{
+		var sPageURL = window.location.search.substring(1);
+		var sURLVariables = sPageURL.split('&');
+		for (var i = 0; i < sURLVariables.length; i++) 
+		{
+			var sParameterName = sURLVariables[i].split('=');
+			if (sParameterName[0] == sParam) 
+			{
+				return sParameterName[1];
+			}
+		}
+    }
 
 
 	function toggleStart()
