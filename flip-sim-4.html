@@ -26,8 +26,8 @@
 
 	var canvas = document.getElementById("myCanvas");
 	var gl = canvas.getContext("webgl");	
-	canvas.width = 400; //window.innerWidth - 20;
-	canvas.height = 400; //window.innerHeight - 20;
+	canvas.width = 360; //window.innerWidth - 20;
+	canvas.height = 360; //window.innerHeight - 20;
 
 	canvas.focus();
 
@@ -630,7 +630,7 @@
 		scene.numPressureIters = 50;
 		scene.numParticleIters = 2;
 
-		var res = 24;
+		var res = 16;
 	
 		var tankHeight = 1.0 * simHeight;
 		var tankWidth = 1.0 * simWidth;
